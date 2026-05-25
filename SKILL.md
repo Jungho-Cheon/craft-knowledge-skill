@@ -25,11 +25,20 @@ A vault is either a **package** (single distributable domain) or a **consumer** 
 {package-name}/
 ├── kb.yaml            # Package metadata (name, version, embedding_model, ...)
 ├── MOC.md             # Map of Content — single domain, lives at root
-├── concepts/          # Core ideas, definitions
-├── people/            # Key figures, authors (when relevant)
-├── tools/             # Products, frameworks, libraries
+├── {category}/        # Domain-specific folders — determined during Scope step
 └── .chromadb/         # Vector index (auto-generated, never edit manually)
 ```
+
+**Folder structure is domain-driven.** During the Scope step, decide what category folders the domain actually needs — do not create folders just because they appear as examples. Common patterns:
+
+| Domain type | Typical folders |
+|-------------|-----------------|
+| Medical / scientific | `concepts/`, `mechanisms/`, `treatments/`, `biomarkers/` |
+| Software / engineering | `concepts/`, `patterns/`, `tools/`, `apis/` |
+| History / humanities | `concepts/`, `people/`, `events/` |
+| Generic | `concepts/` only — expand as content grows |
+
+Only create a folder when you have at least one note to put in it. The `concepts/` folder is the default starting point for most domains.
 
 Agent navigation is handled by the vector index (`query.py`), not a manual index file. The MOC serves as the human-readable domain map and insights hub.
 
@@ -84,15 +93,17 @@ uv run ~/.claude/skills/craft-knowledge/scripts/embed.py --vault {vault_path} --
 
 ### After Writing or Editing Notes
 
-Run embed without any extra flags — it automatically detects and re-indexes only changed files:
-```bash
-uv run ~/.claude/skills/craft-knowledge/scripts/embed.py --vault {vault_path}
-```
+**Index immediately after each write.** Use `--file` to re-index a single note right after saving it so the note is searchable before you move to the next one:
 
-To update a single file immediately after editing:
 ```bash
 uv run ~/.claude/skills/craft-knowledge/scripts/embed.py \
-  --vault {vault_path} --file concepts/note-name.md
+  --vault {vault_path} --file {relative/path/to/note.md}
+```
+
+When writing a batch of notes in a single session, run a full incremental index at the end (detects all changed files automatically):
+
+```bash
+uv run ~/.claude/skills/craft-knowledge/scripts/embed.py --vault {vault_path}
 ```
 
 ### .gitignore
@@ -124,12 +135,13 @@ Use when two separate vaults should be combined (e.g., merging a domain-specific
 domain: {domain}
 status: published | stub
 sources:
-  - url: "https://..."
-    accessed: {YYYY-MM-DD}
+  - "https://... (YYYY-MM-DD)"
 tags: []
 refresh_after: {YYYY-MM-DD}   # optional — for time-sensitive topics
 ---
 ```
+
+`sources` is a **flat list of strings** — each entry is a URL followed by the access date in parentheses. Nested YAML objects (e.g., `- url: / accessed:`) render as unparsed orange text in Obsidian's Properties panel and must not be used.
 
 - `published` — all claims in this note are verified from ≥2 independent sources
 - `stub` — placeholder; content to be filled once verified
@@ -212,7 +224,7 @@ A knowledge base that only accumulates facts is a reference manual, not an intel
 Every published note must include at minimum one of:
 
 - **"함께 고려할 것" (Consider together)** — explicitly name 2–3 other notes whose meaning changes when read alongside this one
-- **"잘못 이해하거나 설정하면 (When this goes wrong)"** — what breaks if this concept is misconfigured or misunderstood, traced to its downstream effect
+- **Failure mode section** — what breaks if this concept is misconfigured or misunderstood, traced to its downstream effect. **Name this section dynamically** to reflect the specific mistake or blind spot the note's content creates. Examples: "디스트로핀만 보면", "LVEF가 정상이라고 안심하면", "in-frame = 경증 보장으로 단순화하면". Never use the generic label "잘못 이해하거나 설정하면" — the heading itself should communicate the error.
 - **"결정 기준 (Decision criteria)"** — when to use this vs. a common alternative
 
 ### MOC Insights section
