@@ -15,21 +15,33 @@ Which vault should I write to? (provide the absolute path)
 Are you starting a new domain, or continuing an existing one?
 ```
 
-This skill uses **dedicated Knowledge Base vaults**, separate from the personal vault (daily notes, weekly notes, etc.). Each vault can be a single domain or a multi-domain collection.
+This skill uses **dedicated Knowledge Base vaults**, separate from the personal vault (daily notes, weekly notes, etc.).
 
-**Folder structure inside a vault:**
+A vault is either a **package** (single distributable domain) or a **consumer** (integrates multiple packages).
+
+**Package vault** — one domain, distributable unit:
 
 ```
-{VaultRoot}/
-├── _MOC/              # Maps of Content — one per domain (index + graph anchor)
-├── _inbox/            # Stubs and unresolved items awaiting verification
-├── domains/
-│   └── {domain}/
-│       ├── concepts/  # Core ideas, definitions
-│       ├── people/    # Key figures, authors
-│       └── tools/     # Products, frameworks, libraries
-├── _templates/        # Note templates
+{package-name}/
+├── kb.yaml            # Package metadata (name, version, embedding_model, ...)
+├── concepts/          # Core ideas, definitions
+├── people/            # Key figures, authors (when relevant)
+├── tools/             # Products, frameworks, libraries
+├── _MOC/              # Map of Content for this domain
+├── MEMORY.md          # Quick reference index for agents
 └── .chromadb/         # Vector index (auto-generated, never edit manually)
+```
+
+**Consumer vault** — integrates installed packages:
+
+```
+{vault-name}/
+├── kb.json            # Dependency manifest (name, version per package)
+├── domains/
+│   └── {package-name}/   # Installed package lives here as a namespace
+├── _MOC/              # Cross-package Maps of Content
+├── MEMORY.md
+└── .chromadb/
 ```
 
 Each note = one concept, 5–10 min read (300–800 words). If a note grows beyond that, extract sub-concepts as child notes and link back.
@@ -101,7 +113,7 @@ Use when two separate vaults should be combined (e.g., merging a domain-specific
    - If domain classification differs → spawn a sub-agent to reclassify (see Classify step)
 4. **Rewrite internal links** — update all `[[WikiLinks]]` to reflect new paths in target vault
 5. **Merge MOCs** — combine domain MOC entries; remove duplicates
-6. **Move notes** — copy resolved notes into `{TargetVault}/domains/{domain}/`
+6. **Move notes** — copy resolved notes into `{TargetVault}/domains/{package-name}/`
 7. **Verify graph integrity** — ensure no broken links remain (search for `[[` targets that don't exist)
 8. **Report** — list merged notes, resolved conflicts, and any stubs left in `_inbox/`
 
@@ -136,6 +148,7 @@ This keeps unverified content visible to agents (greppable via `#needs-verificat
 
 ### 1. Scope
 - Confirm domain name and depth (intro / intermediate / deep-dive)
+- Confirm vault type: package (single domain) or consumer (multi-domain)
 - Check if a MOC exists in `_MOC/`; if not, create one
 
 ### 2. Research & Verify
@@ -164,7 +177,7 @@ This keeps unverified content visible to agents (greppable via `#needs-verificat
   "Given these domain options: {A}, {B}. Classify this note based only on its content.
    Return: primary domain, reason (≤2 sentences), confidence 1–5."
   ```
-- Accept if confidence ≥ 4; otherwise place in `_inbox/` as `status: stub`
+- Accept if confidence ≥ 4; otherwise save with `status: stub` and `#needs-verification` tag in the most likely folder
 
 ### 7. Lazy refresh
 - On each skill invocation, search for notes tagged `#needs-verification` and `status: stub`
