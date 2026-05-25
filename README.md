@@ -86,8 +86,7 @@ As this format matures, it could be distributed as a package: someone publishes 
 │       └── tools/           # Tools, frameworks, libraries
 ├── _templates/              # Note templates
 ├── .chromadb/               # Vector index — auto-generated, gitignored
-├── .gitignore
-└── MEMORY.md                # Quick reference index for agents
+└── .gitignore
 ```
 
 ```

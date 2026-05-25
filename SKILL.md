@@ -28,9 +28,10 @@ A vault is either a **package** (single distributable domain) or a **consumer** 
 ├── people/            # Key figures, authors (when relevant)
 ├── tools/             # Products, frameworks, libraries
 ├── _MOC/              # Map of Content for this domain
-├── MEMORY.md          # Quick reference index for agents
 └── .chromadb/         # Vector index (auto-generated, never edit manually)
 ```
+
+Agent navigation is handled by the vector index (`query.py`), not a manual index file. The MOC serves as the human-readable domain map and insights hub.
 
 **Consumer vault** — integrates installed packages:
 
@@ -40,7 +41,6 @@ A vault is either a **package** (single distributable domain) or a **consumer** 
 ├── domains/
 │   └── {package-name}/   # Installed package lives here as a namespace
 ├── _MOC/              # Cross-package Maps of Content
-├── MEMORY.md
 └── .chromadb/
 ```
 

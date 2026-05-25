@@ -86,8 +86,7 @@ WikiLink   →  그 노트에서 [[물 온도]] 따라가기  →  연결된 개
 │       └── tools/           # 도구, 프레임워크, 라이브러리
 ├── _templates/              # 노트 템플릿
 ├── .chromadb/               # 벡터 인덱스 — 자동 생성, gitignore
-├── .gitignore
-└── MEMORY.md                # 에이전트를 위한 빠른 참조 인덱스
+└── .gitignore
 ```
 
 ```
