@@ -212,7 +212,7 @@ A knowledge base that only accumulates facts is a reference manual, not an intel
 Every published note must include at minimum one of:
 
 - **"함께 고려할 것" (Consider together)** — explicitly name 2–3 other notes whose meaning changes when read alongside this one
-- **"이것이 틀리면 (When this goes wrong)"** — what breaks if this concept is misconfigured or misunderstood, traced to its downstream effect
+- **"잘못 이해하거나 설정하면 (When this goes wrong)"** — what breaks if this concept is misconfigured or misunderstood, traced to its downstream effect
 - **"결정 기준 (Decision criteria)"** — when to use this vs. a common alternative
 
 ### MOC Insights section
