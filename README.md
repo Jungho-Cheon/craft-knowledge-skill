@@ -344,6 +344,7 @@ Model weights are downloaded on first run to `~/.cache/chroma/onnx_models/` and 
 | `uv run` for dependencies | Global `pip install` | No system Python pollution. Reproducible across machines. Zero manual install steps |
 | Multilingual embedding model | English-only model | English-only model returned 0–3% relevance on Korean queries. Multilingual model: 29–53% |
 | Vector search + WikiLinks dual layer | Vector search alone | Vectors find similar notes. Insights come from connecting dissimilar notes. WikiLinks fill that gap |
+| ChromaDB `PersistentClient` (local file) | `HttpClient` (server mode) | Keeps everything local and self-contained — no server to run or maintain. Trade-off: each vault has its own isolated index. A future KB registry/platform would likely shift to server mode so multiple vaults can share a centralized index |
 | No `MEMORY.md` index file | Manual note index file | Agent navigation is handled by the vector index. MEMORY.md duplicates what `query.py` already does, with manual maintenance cost |
 | No `_status.md` summary file | Session state summary file | Maintenance cost grows linearly with note count. Becomes stale. Solved by vector search instead |
 | mtime-based staleness detection | Full re-index every run | Only processes changed files, keeping update time constant regardless of vault size |
