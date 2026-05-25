@@ -75,17 +75,21 @@ WikiLink   →  그 노트에서 [[물 온도]] 따라가기  →  연결된 개
 ## 아키텍처
 
 ```
-{VaultRoot}/
-├── _MOC/                    # 도메인별 Map of Content — 인덱스 + 인사이트 허브
-│   └── {domain}-moc.md
-├── _inbox/                  # 검증 대기 중인 스텁 노트
-├── domains/
-│   └── {domain}/
-│       ├── concepts/        # 핵심 아이디어 및 정의
-│       ├── people/          # 주요 인물 (해당되는 경우)
-│       └── tools/           # 도구, 프레임워크, 라이브러리
-├── _templates/              # 노트 템플릿
+{package-name}/              (패키지 볼트 — 단일 도메인, 배포 단위)
+├── kb.yaml                  # 패키지 메타데이터 (name, version, ...)
+├── MOC.md                   # Map of Content — 도메인 인덱스 + 인사이트 허브
+├── concepts/                # 핵심 아이디어 및 정의
+├── people/                  # 주요 인물 (해당되는 경우)
+├── tools/                   # 도구, 프레임워크, 라이브러리
 ├── .chromadb/               # 벡터 인덱스 — 자동 생성, gitignore
+└── .gitignore
+
+{vault-name}/                (컨슈머 볼트 — 여러 패키지 통합)
+├── kb.json                  # 의존성 선언
+├── _MOC/                    # 크로스 패키지 Map of Content
+├── domains/
+│   └── {package-name}/      # 설치된 패키지 (네임스페이스)
+├── .chromadb/
 └── .gitignore
 ```
 

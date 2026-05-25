@@ -24,10 +24,10 @@ A vault is either a **package** (single distributable domain) or a **consumer** 
 ```
 {package-name}/
 ├── kb.yaml            # Package metadata (name, version, embedding_model, ...)
+├── MOC.md             # Map of Content — single domain, lives at root
 ├── concepts/          # Core ideas, definitions
 ├── people/            # Key figures, authors (when relevant)
 ├── tools/             # Products, frameworks, libraries
-├── _MOC/              # Map of Content for this domain
 └── .chromadb/         # Vector index (auto-generated, never edit manually)
 ```
 
@@ -40,7 +40,7 @@ Agent navigation is handled by the vector index (`query.py`), not a manual index
 ├── kb.json            # Dependency manifest (name, version per package)
 ├── domains/
 │   └── {package-name}/   # Installed package lives here as a namespace
-├── _MOC/              # Cross-package Maps of Content
+├── _MOC/              # Cross-package Maps of Content (one per domain)
 └── .chromadb/
 ```
 
@@ -149,7 +149,7 @@ This keeps unverified content visible to agents (greppable via `#needs-verificat
 ### 1. Scope
 - Confirm domain name and depth (intro / intermediate / deep-dive)
 - Confirm vault type: package (single domain) or consumer (multi-domain)
-- Check if a MOC exists in `_MOC/`; if not, create one
+- Check if `MOC.md` exists at the vault root; if not, create one
 
 ### 2. Research & Verify
 - Web-search the topic; read ≥2 independent primary sources before writing

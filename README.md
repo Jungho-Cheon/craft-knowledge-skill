@@ -75,17 +75,21 @@ As this format matures, it could be distributed as a package: someone publishes 
 ## Architecture
 
 ```
-{VaultRoot}/
-├── _MOC/                    # Map of Content per domain — index + insight hub
-│   └── {domain}-moc.md
-├── _inbox/                  # Unverified stub notes awaiting research
-├── domains/
-│   └── {domain}/
-│       ├── concepts/        # Core ideas and definitions
-│       ├── people/          # Key figures (when relevant)
-│       └── tools/           # Tools, frameworks, libraries
-├── _templates/              # Note templates
+{package-name}/              (package vault — single domain, distributable)
+├── kb.yaml                  # Package metadata (name, version, ...)
+├── MOC.md                   # Map of Content — domain index + insights hub
+├── concepts/                # Core ideas and definitions
+├── people/                  # Key figures (when relevant)
+├── tools/                   # Tools, frameworks, libraries
 ├── .chromadb/               # Vector index — auto-generated, gitignored
+└── .gitignore
+
+{vault-name}/                (consumer vault — integrates multiple packages)
+├── kb.json                  # Dependency manifest
+├── _MOC/                    # Cross-package Maps of Content
+├── domains/
+│   └── {package-name}/      # Installed packages as namespaces
+├── .chromadb/
 └── .gitignore
 ```
 
