@@ -92,7 +92,7 @@ uv run ~/.claude/skills/craft-knowledge/scripts/embed.py --vault {vault_path}
 To update a single file immediately after editing:
 ```bash
 uv run ~/.claude/skills/craft-knowledge/scripts/embed.py \
-  --vault {vault_path} --file domains/domain/concepts/note-name.md
+  --vault {vault_path} --file concepts/note-name.md
 ```
 
 ### .gitignore
@@ -115,7 +115,7 @@ Use when two separate vaults should be combined (e.g., merging a domain-specific
 5. **Merge MOCs** — combine domain MOC entries; remove duplicates
 6. **Move notes** — copy resolved notes into `{TargetVault}/domains/{package-name}/`
 7. **Verify graph integrity** — ensure no broken links remain (search for `[[` targets that don't exist)
-8. **Report** — list merged notes, resolved conflicts, and any stubs left in `_inbox/`
+8. **Report** — list merged notes, resolved conflicts, and any remaining `status: stub` notes
 
 ## Note Frontmatter
 

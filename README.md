@@ -160,9 +160,9 @@ uv run ~/.claude/skills/craft-knowledge/scripts/query.py \
   --vault /path/to/vault "topic or question"
 
 # Example output
-[1] domains/sentry/tools/alerting.md              Relevance: 29%
-[2] domains/sentry/concepts/events-and-issues.md  Relevance: 18%
-[3] domains/sentry/concepts/environments.md       Relevance: 17%
+[1] tools/brewing-methods.md       Relevance: 29%
+[2] concepts/extraction-ratio.md   Relevance: 18%
+[3] concepts/water-temperature.md  Relevance: 17%
 ```
 
 Read only those notes, then follow `[[WikiLinks]]` within them to explore connected concepts.
@@ -175,7 +175,7 @@ uv run ~/.claude/skills/craft-knowledge/scripts/embed.py --vault /path/to/vault
 
 # Update a single file immediately
 uv run ~/.claude/skills/craft-knowledge/scripts/embed.py \
-  --vault /path/to/vault --file domains/sentry/tools/alerting.md
+  --vault /path/to/vault --file concepts/extraction-ratio.md
 ```
 
 ### Check if the index is fresh
@@ -188,8 +188,8 @@ Index is up to date. (15 notes)
 
 # Needs updating
 2 stale note(s):
-  domains/sentry/tools/alerting.md
-  domains/sentry/concepts/dsn.md
+  concepts/extraction-ratio.md
+  tools/brewing-methods.md
 ```
 
 ### On a freshly cloned repository
@@ -344,5 +344,6 @@ Model weights are downloaded on first run to `~/.cache/chroma/onnx_models/` and 
 | `uv run` for dependencies | Global `pip install` | No system Python pollution. Reproducible across machines. Zero manual install steps |
 | Multilingual embedding model | English-only model | English-only model returned 0–3% relevance on Korean queries. Multilingual model: 29–53% |
 | Vector search + WikiLinks dual layer | Vector search alone | Vectors find similar notes. Insights come from connecting dissimilar notes. WikiLinks fill that gap |
+| No `MEMORY.md` index file | Manual note index file | Agent navigation is handled by the vector index. MEMORY.md duplicates what `query.py` already does, with manual maintenance cost |
 | No `_status.md` summary file | Session state summary file | Maintenance cost grows linearly with note count. Becomes stale. Solved by vector search instead |
 | mtime-based staleness detection | Full re-index every run | Only processes changed files, keeping update time constant regardless of vault size |
